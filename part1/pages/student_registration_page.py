@@ -2,8 +2,6 @@ import os
 
 from selene import browser, have, command
 
-from part1.data.users import User
-
 
 class StudentRegistrationPage:
 
@@ -70,28 +68,42 @@ class StudentRegistrationPage:
     def submit_form(self):
         browser.element("#submit").submit()
 
-    def should_registered_user_with(self, user: User):
+    def should_registered_user_with(
+        self,
+        first_name,
+        last_name,
+        email,
+        gender,
+        number,
+        birth_date,
+        subjects,
+        hobbies,
+        image_name,
+        state,
+        city,
+        address,
+    ):
         browser.element(".table-responsive").all("td").should(
             have.texts(
                 "Student Name",
-                f"{user.first_name} {user.last_name}",
+                f"{first_name} {last_name}",
                 "Student Email",
-                user.email,
+                email,
                 "Gender",
-                user.gender,
+                gender,
                 "Mobile",
-                user.number,
+                number,
                 "Date of Birth",
-                f"{user.birth_date['day']} {user.birth_date['month']},{user.birth_date['year']}",
+                f"{birth_date['day']} {birth_date['month']},{birth_date['year']}",
                 "Subjects",
-                ", ".join(user.subjects),
+                ", ".join(subjects),
                 "Hobbies",
-                ", ".join(user.hobbies),
+                ", ".join(hobbies),
                 "Picture",
-                user.image_name,
+                image_name,
                 "Address",
-                user.address,
+                address,
                 "State and City",
-                f"{user.state} {user.city}",
+                f"{state} {city}",
             )
         )
