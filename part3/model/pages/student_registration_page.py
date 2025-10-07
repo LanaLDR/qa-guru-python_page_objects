@@ -2,7 +2,7 @@ import os
 
 from selene import browser, have, command
 
-from part1.data.users import User
+from part3.data.users import User
 
 
 class StudentRegistrationPage:
