@@ -2,6 +2,8 @@ import pytest
 from selene import browser
 from selenium.webdriver import ChromeOptions
 
+from utils import attach
+
 
 @pytest.fixture()
 def setup_browser(request):
@@ -16,4 +18,8 @@ def setup_browser(request):
     browser.config.driver_options = options
     browser.config.base_url = "https://demoqa.com"
     yield
+    attach.add_screenshot(browser)
+    attach.add_logs(browser)
+    attach.add_html(browser)
+    attach.add_video(browser)
     browser.quit()
