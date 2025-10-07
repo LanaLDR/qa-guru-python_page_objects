@@ -1,4 +1,4 @@
-import os
+from pathlib import Path
 
 from selene import browser, have, command
 
@@ -50,9 +50,9 @@ class StudentRegistrationPage:
             browser.all("label[for^='hobbies']").element_by(have.text(hobby)).click()
 
     def upload_picture(self, image_name):
-        browser.element("#uploadPicture").set_value(
-            os.path.abspath(f"tmp/{image_name}")
-        )
+        project_root = Path(__file__).parents[2]
+        file_path = project_root.parent / "tmp" / image_name
+        browser.element("#uploadPicture").set_value(str(file_path))
 
     def set_address(self, address):
         browser.element("#currentAddress").set_value(address)

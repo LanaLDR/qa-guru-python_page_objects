@@ -1,5 +1,3 @@
-from selene import browser
-
 from part3.model.components.panel import Panel
 from part3.model.pages.simple_user_registration_page import SimpleUserRegistrationPage
 from part3.model.pages.student_registration_page import StudentRegistrationPage

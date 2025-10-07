@@ -1,10 +1,19 @@
 import pytest
 from selene import browser
+from selenium.webdriver import ChromeOptions
 
 
 @pytest.fixture()
-def setup_browser():
+def setup_browser(request):
+    options = ChromeOptions()
+    options.set_capability("browserName", "chrome")
+    options.set_capability("browserVersion", "128.0")
+    options.set_capability("selenoid:options", {"enableVideo": True, "enableVNC": True})
+
+    browser.config.driver_remote_url = (
+        "https://user1:1234@selenoid.autotests.cloud/wd/hub"
+    )
+    browser.config.driver_options = options
     browser.config.base_url = "https://demoqa.com"
-    browser.driver.maximize_window()
     yield
     browser.quit()
