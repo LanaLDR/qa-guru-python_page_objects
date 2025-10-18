@@ -35,9 +35,8 @@ def setup_browser(request):
 
     login = os.getenv("LOGIN")
     password = os.getenv("PASSWORD")
-    browser.config.driver_remote_url = (
-        f"https://{login}:{password}@selenoid.autotests.cloud/wd/hub"
-    )
+    url = os.getenv("URL")
+    browser.config.driver_remote_url = f"https://{login}:{password}{url}"
     browser.config.driver_options = options
     browser.config.base_url = "https://demoqa.com"
     yield
