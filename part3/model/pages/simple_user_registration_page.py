@@ -1,3 +1,4 @@
+import allure
 from selene import browser, have, command
 
 from part3.data.users import SimpleUser
@@ -12,24 +13,31 @@ class SimpleUserRegistrationPage:
         self.submit_button = browser.element("#submit")
         self.output_user_info = browser.element("#output")
 
+    @allure.step("Открываем форму регистрации")
     def open(self):
         browser.open("/text-box")
 
+    @allure.step("Вводим полное имя {full_name}")
     def fill_full_name(self, full_name):
         self.full_name.type(full_name)
 
+    @allure.step("Вводим email {email}")
     def fill_email(self, email):
         self.email.type(email)
 
+    @allure.step("Вводим фактический адрес {current_address}")
     def fill_current_address(self, current_address):
         self.current_address.type(current_address)
 
+    @allure.step("Вводим адрес регистрации {permanent_address}")
     def fill_permanent_address(self, permanent_address):
         self.permanent_address.type(permanent_address)
 
+    @allure.step("Кликаем на кнопку завершения регистрации")
     def submit(self):
         self.submit_button.perform(command.js.scroll_into_view).click()
 
+    @allure.step("Проверяем данные после регистрации")
     def should_have_submited(self, simple_user: SimpleUser):
         self.output_user_info.should(have.text(f"Name:{simple_user.full_name}"))
         self.output_user_info.should(
@@ -39,6 +47,7 @@ class SimpleUserRegistrationPage:
             have.text(f"Permananet Address :{simple_user.permanent_address}")
         )
 
+    @allure.step("Упрощенная регистрация пользователя")
     def register(self, simple_user: SimpleUser):
         self.fill_full_name(simple_user.full_name)
         self.fill_email(simple_user.email)

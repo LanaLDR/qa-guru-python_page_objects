@@ -1,5 +1,6 @@
 from pathlib import Path
 
+import allure
 from selene import browser, have, command
 
 from part3.data.users import User
@@ -11,26 +12,33 @@ class StudentRegistrationPage:
         self.state = browser.element("#state")
         self.city = browser.element("#city")
 
+    @allure.step("Открываем форму регистрации")
     def open(self):
         browser.open("/automation-practice-form")
 
+    @allure.step("Вводим имя {first_name}")
     def set_first_name(self, first_name):
         browser.element("#firstName").set_value(first_name)
 
+    @allure.step("Вводим фамилию {last_name}")
     def set_last_name(self, last_name):
         browser.element("#lastName").set_value(last_name)
 
+    @allure.step("Вводим email {email}")
     def set_email(self, email):
         browser.element("#userEmail").set_value(email)
 
+    @allure.step("Выбираем гендер {gender}")
     def choose_gender(self, gender):
         browser.all("[name='gender']").element_by(have.value(gender)).element(
             ".."
         ).element("label").click()
 
+    @allure.step("Вводим номер телефона {number}")
     def set_mobile_number(self, number):
         browser.element("#userNumber").set_value(number)
 
+    @allure.step("Выбираем дату рождения {birth_date}")
     def choose_birth_date(self, birth_date):
         browser.element("#dateOfBirthInput").click()
         browser.element(".react-datepicker__year-select").element(
@@ -41,35 +49,43 @@ class StudentRegistrationPage:
         ).click()
         browser.element(f'.react-datepicker__day--0{birth_date["day"]}').click()
 
+    @allure.step("Выбираем предметы {subjects}")
     def set_subjects(self, subjects):
         for subj in subjects:
             browser.element("#subjectsInput").set_value(subj).press_enter()
 
+    @allure.step("Выбираем хобби {hobbies}")
     def choose_hobbies(self, hobbies):
         for hobby in hobbies:
             browser.all("label[for^='hobbies']").element_by(have.text(hobby)).click()
 
+    @allure.step("Загружаем картинку")
     def upload_picture(self, image_name):
         project_root = Path(__file__).parents[2]
         file_path = project_root.parent / "tmp" / image_name
         browser.element("#uploadPicture").set_value(str(file_path))
 
+    @allure.step("Вводим адрес {address}")
     def set_address(self, address):
         browser.element("#currentAddress").set_value(address)
 
+    @allure.step("Выбираем штат {state}")
     def choose_state(self, state):
         self.state.perform(command.js.scroll_into_view)
         self.state.click()
         browser.all("[id^='react-select']").element_by(have.text(state)).click()
 
+    @allure.step("Выбираем город {city}")
     def choose_city(self, city):
         self.city.perform(command.js.scroll_into_view)
         self.city.click()
         browser.all("[id^='react-select']").element_by(have.text(city)).click()
 
+    @allure.step("Завершаем регистрацию")
     def submit_form(self):
         browser.element("#submit").submit()
 
+    @allure.step("Регистрация стундента {user}")
     def register(self, user: User):
         self.set_first_name(user.first_name)
         self.set_last_name(user.last_name)
@@ -85,6 +101,7 @@ class StudentRegistrationPage:
         self.choose_city(user.city)
         self.submit_form()
 
+    @allure.step("Проверяем данные после регистрации")
     def should_registered_user_with(self, user: User):
         browser.element(".table-responsive").all("td").should(
             have.texts(

@@ -5,11 +5,19 @@ from selenium.webdriver import ChromeOptions
 from utils import attach
 
 
-@pytest.fixture()
+def pytest_addoption(parser):
+    parser.addoption(
+        "--browser_version",
+        default="128.0",
+    )
+
+
+@pytest.fixture(scope="function")
 def setup_browser(request):
+    browser_version = request.config.getoption("--browser_version")
     options = ChromeOptions()
     options.set_capability("browserName", "chrome")
-    options.set_capability("browserVersion", "128.0")
+    options.set_capability("browserVersion", browser_version)
     options.set_capability("selenoid:options", {"enableVideo": True, "enableVNC": True})
 
     browser.config.driver_remote_url = (
